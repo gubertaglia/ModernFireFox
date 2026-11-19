@@ -1,0 +1,242 @@
+/* Modern FireFox 0.10.1 */
+@-moz-document url("about:newtab"), url("about:home"), url-prefix("about:preferences"),
+    url-prefix("about:support"), url-prefix("about:addons"), url("chrome://mozapps/content/extensions/aboutaddons.html"),
+    url-prefix("about:logins") {
+  @media not (forced-colors) {
+    :root {
+      --mff-canvas: light-dark(#f7f7f5, #1f1f1f);
+      --mff-accent: light-dark(#52524f, #bebebe);
+      --mff-search-field: light-dark(#f9f9f8, #2d2d2d);
+      --mff-search-focus: light-dark(#777673, #989898);
+      --mff-text: light-dark(#232323, #f5f5f5);
+      --mff-panel: light-dark(#fafaf9, #303030);
+      --mff-line: light-dark(#d0cfcc, #515151);
+      --mff-divider: light-dark(#dcdbd8, #414141);
+      --mff-choice: light-dark(#e2e2df, #4b4b4b);
+      --mff-pressed: light-dark(#dcdcd9, #444444);
+    }
+
+    :is(#preferences-root, .customize-menu) {
+      --background-color-canvas: var(--mff-canvas) !important;
+      --background-color-box: var(--mff-panel) !important;
+      --text-color: var(--mff-text) !important;
+      --color-accent-primary: var(--mff-accent) !important;
+      --color-accent-primary-hover: color-mix(in srgb, var(--mff-accent) 80%, var(--mff-text)) !important;
+      --color-accent-primary-active: color-mix(in srgb, var(--mff-accent) 65%, var(--mff-text)) !important;
+      --focus-outline-color: var(--mff-accent) !important;
+      --border-color: var(--mff-line) !important;
+      --border-color-deemphasized: var(--mff-divider) !important;
+      --input-background-color: var(--mff-search-field) !important;
+      --input-border-color: var(--mff-line) !important;
+    }
+  }
+}
+
+@-moz-document url-prefix("about:addons"), url("chrome://mozapps/content/extensions/aboutaddons.html"),
+    url-prefix("about:support"), url-prefix("about:logins") {
+  @media screen and (forced-colors: none) {
+    :root {
+      color: var(--mff-text) !important;
+      background-color: var(--mff-canvas) !important;
+      --background-color-canvas: var(--mff-canvas) !important;
+      --background-color-box: var(--mff-panel) !important;
+      --text-color: var(--mff-text) !important;
+      --color-accent-primary: var(--mff-accent) !important;
+      --color-accent-primary-hover: var(--mff-text) !important;
+      --link-color: var(--mff-accent) !important;
+      --link-color-hover: var(--mff-text) !important;
+      --focus-outline-color: var(--mff-accent) !important;
+      --input-background-color: var(--mff-search-field) !important;
+      --input-border-color: var(--mff-line) !important;
+      --button-border-color: var(--mff-line) !important;
+      --button-border-color-hover: var(--mff-accent) !important;
+      --button-border-radius: 8px !important;
+    }
+  }
+}
+
+@-moz-document url-prefix("about:logins") {
+  @media screen and (forced-colors: none) {
+    :root {
+      --border-color: var(--mff-line) !important;
+      --border-color-selected: var(--mff-accent) !important;
+      --input-border-radius: 8px !important;
+      --button-background-color: var(--mff-panel) !important;
+      --button-background-color-hover: var(--mff-choice) !important;
+      --button-background-color-active: var(--mff-pressed) !important;
+      --button-background-color-ghost-hover: var(--mff-choice) !important;
+      --button-background-color-ghost-active: var(--mff-pressed) !important;
+      --button-background-color-primary: var(--mff-accent) !important;
+      --button-background-color-primary-hover: color-mix(in srgb, var(--mff-accent) 85%, var(--mff-text)) !important;
+      --button-background-color-primary-active: color-mix(in srgb, var(--mff-accent) 70%, var(--mff-text)) !important;
+      --button-text-color-primary: var(--mff-canvas) !important;
+      --button-text-color-primary-hover: var(--mff-canvas) !important;
+      --button-text-color-primary-active: var(--mff-canvas) !important;
+      --logins-dialog-background-color: var(--mff-panel) !important;
+      --logins-dialog-border: 1px solid var(--mff-line) !important;
+      --logins-dialog-border-radius: 12px !important;
+    }
+
+    body > header {
+      border-block-end: 1px solid var(--mff-divider);
+    }
+
+    menu-button {
+      --border-radius-small: 8px !important;
+    }
+  }
+}
+
+@-moz-document url-prefix("about:support") {
+  @media screen and (forced-colors: none) {
+    :root {
+      --table-background-color: var(--mff-panel) !important;
+      --table-header-background-color: var(--mff-choice) !important;
+      --table-header-text-color: var(--mff-text) !important;
+      --table-border-color: var(--mff-line) !important;
+      --table-row-background-color: var(--mff-panel) !important;
+      --table-row-background-color-alternate: var(--mff-search-field) !important;
+    }
+
+    table, .action-box {
+      border-radius: 10px !important;
+    }
+  }
+}
+
+@-moz-document url-prefix("about:addons"), url("chrome://mozapps/content/extensions/aboutaddons.html") {
+  @media screen and (forced-colors: none) {
+    .addon.card {
+      background-color: var(--mff-panel) !important;
+      border: 1px solid var(--mff-line) !important;
+      border-radius: 12px !important;
+    }
+
+    .addon.card:hover {
+      border-color: var(--mff-accent) !important;
+    }
+
+    moz-toggle {
+      --toggle-background-color-pressed: var(--mff-accent) !important;
+    }
+  }
+}
+
+@-moz-document url-prefix("about:preferences"), url-prefix("about:addons"),
+    url("chrome://mozapps/content/extensions/aboutaddons.html") {
+  @media not (forced-colors) {
+    #preferences-root {
+      background-color: var(--mff-canvas) !important;
+      color: var(--mff-text) !important;
+    }
+
+    :is(#categories, categories-box) moz-page-nav-button {
+      --page-nav-button-background-color-selected: var(--mff-choice) !important;
+      --page-nav-button-text-color-selected: var(--mff-text) !important;
+      --page-nav-button-background-color-hover: var(--mff-pressed) !important;
+      --page-nav-button-text-color-hover: var(--mff-text) !important;
+      --page-nav-button-border-radius: 9px !important;
+    }
+
+    setting-group > moz-card[role="presentation"] {
+      --card-background-color: var(--mff-panel) !important;
+      --card-border: 1px solid var(--mff-line) !important;
+      --card-border-radius: 12px !important;
+    }
+  }
+}
+
+@-moz-document url("about:newtab"), url("about:home") {
+  @media not (forced-colors) {
+    :root {
+      /* Set the base color below any wallpaper chosen in Firefox. */
+      --newtab-background-color: var(--mff-canvas) !important;
+    }
+
+    .open-customization-button::part(button), .personalize-button {
+      --button-icon-fill: currentColor !important;
+      color-scheme: inherit !important;
+      background-color: var(--mff-panel) !important;
+      color: var(--mff-text) !important;
+      border: 1px solid var(--mff-line) !important;
+      border-radius: 10px !important;
+    }
+
+    .open-customization-button::part(moz-button-label), .personalize-button > div > img {
+      color: inherit !important;
+    }
+
+    .open-customization-button:is(:hover, :focus-within)::part(button),
+    .personalize-button:is(:hover, :focus-visible) {
+      background-color: var(--mff-choice) !important;
+      outline-color: var(--mff-accent) !important;
+    }
+
+    .open-customization-button:active::part(button), .personalize-button:active {
+      background-color: var(--mff-pressed) !important;
+    }
+
+    .search-wrapper {
+      & content-search-handoff-ui {
+        --content-search-handoff-ui-background-color: var(--mff-search-field) !important;
+        --content-search-handoff-ui-color: var(--mff-text) !important;
+        --content-search-handoff-ui-caret-color: var(--mff-text) !important;
+        --content-search-handoff-ui-unfocused-border-color: var(--mff-line) !important;
+        --content-search-handoff-ui-fakefocus-border-color: var(--mff-search-focus) !important;
+        --content-search-handoff-ui-fakefocus-box-shadow-inner: color-mix(in srgb, var(--mff-search-focus) 22%, transparent) !important;
+      }
+
+      & .search-inner-wrapper > moz-urlbar {
+        --urlbar-background-color: var(--mff-search-field) !important;
+        --urlbar-background-color-focus: var(--mff-search-field) !important;
+        --toolbar-field-text-color: var(--mff-text) !important;
+        --toolbar-field-text-color-focus: var(--mff-text) !important;
+        --toolbar-field-border-color: var(--mff-line) !important;
+        --toolbar-field-border-color-focus: var(--mff-search-focus) !important;
+      }
+    }
+
+    .top-site-outer panel-list {
+      --panel-list-background-color: var(--mff-panel) !important;
+      --panel-list-text-color: var(--mff-text) !important;
+      --panel-list-border-color: var(--mff-line) !important;
+      --panel-list-border-radius: 12px !important;
+      --panel-list-padding-block: 6px !important;
+      --panel-separator-color: var(--mff-divider) !important;
+
+      & panel-item {
+        --panel-item-button-border-radius: 7px !important;
+        --button-background-color-menu-hover: var(--mff-choice) !important;
+        --button-background-color-menu-active: var(--mff-pressed) !important;
+        --button-text-color-menu-hover: var(--mff-text) !important;
+        --button-text-color-menu-active: var(--mff-text) !important;
+      }
+    }
+
+    .top-site-outer .context-menu {
+      color: var(--mff-text) !important;
+      background: var(--mff-panel) !important;
+      border: 1px solid var(--mff-line) !important;
+      border-radius: 12px !important;
+      --border-color: var(--mff-divider);
+      --newtab-element-secondary-hover-color: var(--mff-choice);
+      --newtab-element-secondary-active-color: var(--mff-pressed);
+    }
+
+    .customize-menu {
+      --customize-menu-bg: var(--mff-panel) !important;
+      --newtab-background-color-secondary: var(--mff-panel) !important;
+      --newtab-element-secondary-color: var(--mff-search-field) !important;
+      --newtab-primary-action-background: var(--mff-accent) !important;
+      --link-color: light-dark(#52524f, #bebebe) !important;
+      color: var(--mff-text) !important;
+      background-color: var(--mff-panel) !important;
+      border: 1px solid var(--mff-line) !important;
+      border-radius: 12px !important;
+
+      & .home-section .divider {
+        border-block-start-color: var(--mff-divider) !important;
+      }
+    }
+  }
+}

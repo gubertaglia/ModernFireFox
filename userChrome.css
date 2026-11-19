@@ -1,0 +1,551 @@
+/* Modern FireFox 0.10.1 */
+@-moz-document url("chrome://browser/content/browser.xhtml"),
+    url("chrome://browser/content/places/bookmarksSidebar.xhtml"),
+    url("chrome://browser/content/places/historySidebar.xhtml"),
+    url("chrome://browser/content/syncedtabs/sidebar.html"),
+    url("chrome://browser/content/sidebar/sidebar-bookmarks.html"),
+    url("chrome://browser/content/sidebar/sidebar-history.html"),
+    url("chrome://browser/content/sidebar/sidebar-syncedtabs.html"),
+    url("chrome://browser/content/sidebar/sidebar-customize.html"),
+    url("chrome://browser/content/genai/chat.html"),
+    url("chrome://global/content/megalist/megalist.html") {
+  @media not (forced-colors) {
+    :root {
+      --mff-toolbar: light-dark(#efefed, #232323);
+      --mff-field: light-dark(#f9f9f8, #2d2d2d);
+      --mff-panel: light-dark(#fafaf9, #303030);
+      --mff-tab-selected: light-dark(#ffffff, #343434);
+      --mff-line: light-dark(#d0cfcc, #515151);
+      --mff-divider: light-dark(#dcdbd8, #414141);
+      --mff-text: light-dark(#232323, #f5f5f5);
+      --mff-muted: light-dark(#595858, #bababa);
+      --mff-disabled: light-dark(#767674, #8e8e8e);
+      --mff-hover: light-dark(#e6e6e4, #383838);
+      --mff-pressed: light-dark(#dcdcd9, #444444);
+      --mff-accent: light-dark(#52524f, #bebebe);
+      --mff-choice: light-dark(#e2e2df, #4b4b4b);
+      --mff-popup-radius: 12px;
+
+      @media (-moz-platform: linux) and (not (-moz-gtk-csd-transparency-available)) {
+        --mff-popup-radius: 0px;
+      }
+    }
+  }
+}
+
+@-moz-document url("chrome://browser/content/browser.xhtml") {
+  /* Keep Firefox's special window layouts and toolbar customization intact. */
+  :root:not([popup-window], [chromeless-window], [mini-window], [taskbartab], [ai-window], [customizing]) {
+    & #navigator-toolbox:not([tabs-hidden]) {
+      > #toolbar-menubar {
+        order: -2 !important;
+      }
+
+      > #nav-bar {
+        order: -1 !important;
+        border-top-style: none !important;
+      }
+    }
+
+    /* Use the native controls in the first visible row when the menu bar is hidden. */
+    &[customtitlebar]:not([inFullscreen]) #navigator-toolbox:not([tabs-hidden]):has(> #nav-bar > .titlebar-buttonbox-container) {
+      > #toolbar-menubar:is([autohide][inactive], [collapsed]) {
+        & ~ #nav-bar > .titlebar-buttonbox-container {
+          display: flex !important;
+        }
+
+        & ~ #TabsToolbar > :is(.titlebar-buttonbox-container, .titlebar-spacer) {
+          display: none !important;
+        }
+      }
+    }
+
+    @media (min-width: 800px) {
+      & #nav-bar-customization-target > #urlbar-container {
+        /* Use equal gaps around the field, after reserving space for toolbar buttons. */
+        max-inline-size: min(740px, 54vw) !important;
+        margin-inline: auto !important;
+      }
+
+      & #nav-bar-customization-target > toolbarspring:not(#vertical-spacer) {
+        flex: 0 1 0 !important;
+        min-inline-size: 0 !important;
+      }
+    }
+
+    /* Center the visible tab strip without changing Firefox's scrollbox. */
+    & #tabbrowser-tabs[orient="horizontal"] #tabbrowser-arrowscrollbox:not([overflowing]) {
+      > :nth-child(1 of .tabbrowser-tab, tab-group, tab-split-view-wrapper, #tabbrowser-arrowscrollbox-periphery) {
+        margin-inline-start: auto !important;
+      }
+
+      > #tabbrowser-arrowscrollbox-periphery {
+        margin-inline-end: auto !important;
+      }
+    }
+
+    /* Safe alignment falls back to the start when the bookmarks need to overflow. */
+    & #PersonalToolbar > #personal-bookmarks > #PlacesToolbar > #PlacesToolbarItems {
+      justify-content: safe center !important;
+      column-gap: 4px !important;
+    }
+  }
+
+  /* Preserve Firefox's overflow alignment for addresses that do not fit. */
+  #nav-bar #urlbar:not([textoverflow]) .urlbar-input {
+    text-align: center !important;
+  }
+
+  #tabbrowser-tabs[orient="horizontal"] {
+    & .tabbrowser-tab:not([pinned]) .tab-content {
+      --mff-tab-close-width: var(--tab-content-button-size);
+
+      /* Balance the close button's width while giving long titles room to shrink. */
+      &::before {
+        content: "";
+        flex: 0 1000 max(0px, calc(var(--mff-tab-close-width) - var(--tab-padding-inline) / 2));
+      }
+
+      & > .tab-icon-stack {
+        margin-inline-start: auto;
+      }
+
+      & > .tab-label-container {
+        min-inline-size: 0;
+        max-inline-size: max-content;
+        margin-inline-end: auto;
+      }
+    }
+
+    @media not -moz-pref("browser.nova.enabled") {
+      & .tabbrowser-tab:not([pinned], [labelendaligned], [tab-note], :hover) .tab-content {
+        --mff-tab-close-width: 18px;
+      }
+    }
+
+    &[closebuttons="activetab"] .tabbrowser-tab:not([pinned]) .tab-content:not([selected]) {
+      --mff-tab-close-width: 0px;
+    }
+  }
+
+  #tab-preview-panel .tab-preview-text-container,
+  :is(#tabbrowser-tab-tooltip, #bhTooltip) :is(.places-tooltip-title, .places-tooltip-uri) {
+    text-align: center !important;
+  }
+
+  :is(#tabbrowser-tab-tooltip, #bhTooltip) .places-tooltip-box {
+    align-items: center !important;
+  }
+
+  #tabbrowser-tab-tooltip .places-tooltip-box > hbox {
+    justify-content: center !important;
+  }
+
+  @media not (forced-colors) {
+    :root:not([popup-window], [chromeless-window], [mini-window], [taskbartab], [ai-window]) {
+      --chrome-content-separator-color: var(--mff-divider) !important;
+    }
+
+    :root:not([popup-window], [chromeless-window], [mini-window], [taskbartab], [ai-window])
+      #navigator-toolbox {
+      --toolbox-background-color: var(--mff-toolbar) !important;
+      --toolbox-background-color-inactive: var(--mff-toolbar) !important;
+      --toolbox-text-color: var(--mff-text) !important;
+      --toolbox-text-color-inactive: var(--mff-muted) !important;
+      background: var(--mff-toolbar) !important;
+      color: var(--mff-text) !important;
+
+      & :is(#nav-bar, #PersonalToolbar) {
+        background: var(--mff-toolbar) !important;
+        color: var(--mff-text) !important;
+      }
+
+      & :is(#nav-bar, #TabsToolbar, #PersonalToolbar) {
+        --toolbarbutton-icon-fill: var(--mff-text) !important;
+        --toolbarbutton-border-radius: 8px !important;
+        --toolbarbutton-background-color-hover: var(--mff-hover) !important;
+        --toolbarbutton-background-color-active: var(--mff-pressed) !important;
+      }
+
+      @media (-moz-platform: linux) {
+        & .titlebar-buttonbox {
+          & > .titlebar-close {
+            --mff-window-button-color: light-dark(#ed5d57, #ff6c65);
+          }
+
+          & > .titlebar-min {
+            --mff-window-button-color: light-dark(#e9ae37, #f4bf4f);
+          }
+
+          & > :is(.titlebar-max, .titlebar-restore) {
+            --mff-window-button-color: light-dark(#45b65d, #62ce76);
+          }
+
+          & > :is(.titlebar-close, .titlebar-min, .titlebar-max, .titlebar-restore) {
+            & > .toolbarbutton-icon {
+              inline-size: 14px !important;
+              block-size: 14px !important;
+              background-color: var(--mff-window-button-color) !important;
+              background-size: 0 !important;
+              color: #221f1c !important;
+              box-shadow: inset 0 0 0 1px light-dark(rgb(0 0 0 / 15%), rgb(255 255 255 / 15%));
+            }
+
+            &:is(:hover, :focus-visible) > .toolbarbutton-icon {
+              background-size: 11px !important;
+            }
+
+            &:active > .toolbarbutton-icon {
+              background-color: color-mix(in srgb, var(--mff-window-button-color) 80%, #000) !important;
+            }
+          }
+
+          & > :is(.titlebar-max, .titlebar-restore) > .toolbarbutton-icon {
+            background-image: radial-gradient(circle closest-side, currentColor 80%, transparent 100%) !important;
+          }
+
+          & > :is(.titlebar-max, .titlebar-restore):is(:hover, :focus-visible) > .toolbarbutton-icon {
+            background-size: 8px 8px !important;
+          }
+        }
+      }
+    }
+
+    #sidebar-container {
+      background: var(--mff-toolbar) !important;
+      color: var(--mff-text) !important;
+      --sidebar-border-color: var(--mff-divider) !important;
+      --toolbarbutton-icon-fill: var(--mff-text) !important;
+      --toolbarbutton-background-color-hover: var(--mff-hover) !important;
+      --toolbarbutton-background-color-active: var(--mff-pressed) !important;
+    }
+
+    #sidebar-container sidebar-main {
+      --button-border-radius: 8px !important;
+      --button-background-color: var(--mff-choice) !important;
+      --button-background-color-hover: var(--mff-pressed) !important;
+      --button-background-color-ghost-hover: var(--mff-hover) !important;
+      --button-background-color-ghost-active: var(--mff-pressed) !important;
+      --focus-outline-color: var(--mff-accent) !important;
+    }
+
+    #sidebar-button[checked]:not(:hover) > .toolbarbutton-icon {
+      background-color: var(--mff-choice) !important;
+    }
+
+    #sidebar-box {
+      --sidebar-background-color: var(--mff-panel) !important;
+      --sidebar-text-color: var(--mff-text) !important;
+      --sidebar-border-color: var(--mff-line) !important;
+      background-color: var(--mff-panel) !important;
+    }
+
+    #tools-overflow-list > moz-button {
+      --button-background-color-ghost-hover: var(--mff-choice) !important;
+      --button-background-color-ghost-active: var(--mff-pressed) !important;
+      --button-border-radius: 7px !important;
+    }
+
+    #main-menubar > menu:is([_moz-menuactive], [open]) {
+      background-color: var(--mff-choice) !important;
+      color: var(--mff-text) !important;
+      border-radius: 6px !important;
+    }
+
+    #tabbrowser-tabs:is([orient="horizontal"], [orient="vertical"]) {
+      --tab-border-radius: 9px !important;
+      --tab-text-color: var(--mff-muted) !important;
+      --tab-text-color-hover: var(--mff-text) !important;
+      --tab-text-color-selected: var(--mff-text) !important;
+      --tab-background-color-hover: var(--mff-hover) !important;
+      --tab-background-color-selected: var(--mff-tab-selected) !important;
+      --tab-border-color-selected: var(--mff-line) !important;
+      --tab-box-shadow-selected: none !important;
+
+      & .tab-content:is([selected], [multiselected]) {
+        color-scheme: inherit !important;
+      }
+
+      & .tab-background[selected]:not([multiselected]) {
+        background: var(--mff-tab-selected) !important;
+      }
+    }
+
+    #nav-bar #urlbar {
+      --toolbar-field-text-color: var(--mff-text) !important;
+      --toolbar-field-text-color-focus: var(--mff-text) !important;
+      --toolbar-field-border-color: var(--mff-line) !important;
+      --toolbar-field-border-color-focus: var(--mff-accent) !important;
+      --panel-border-color: var(--mff-line) !important;
+      --urlbar-background-border-open: var(--urlbar-snapped-1px-border-width, 1px) solid var(--mff-line) !important;
+      --urlbar-background-color: var(--mff-field) !important;
+      --urlbar-background-color-focus: var(--mff-panel) !important;
+      --urlbar-background-border-radius: 10px !important;
+      --urlbar-border-radius: 10px !important;
+      --urlbarview-border-radius: 10px !important;
+      --urlbarview-separator-color: var(--mff-divider) !important;
+      --urlbarview-background-color-hover: var(--mff-hover) !important;
+      --urlbarview-background-color-selected: var(--mff-choice) !important;
+      --urlbarview-text-color-selected: var(--mff-text) !important;
+
+      & .urlbar-input::placeholder {
+        color: var(--mff-muted) !important;
+        opacity: 1 !important;
+      }
+
+      &[popover-open] {
+        --urlbar-input-container-outline-open: none !important;
+        --urlbar-input-container-outline-open-focused: none !important;
+        --urlbar-background-outline-focused: none !important;
+
+        /* Keep the outer border below the window edge as the panel expands. */
+        & > .urlbar-background {
+          inset-block-start: max(
+            calc(-1 * (var(--urlbar-background-overhang-open) + var(--urlbar-input-growth-open-block))),
+            calc(1px - var(--urlbar-container-padding-block))
+          ) !important;
+        }
+      }
+
+      &[open]:not([noresults]) > .urlbarView > .urlbarView-results {
+        border-block-start: 1px solid var(--mff-divider) !important;
+      }
+
+      /* Separate ordinary results and place group lines above their labels. */
+      & .urlbarView-row:not([hidden], [stale], [feedback-acknowledgment], [type="tip"], [dynamicType]):nth-child(n + 2 of .urlbarView-row:not([hidden], [stale])) {
+        &::after {
+          content: "";
+          position: absolute;
+          inset-inline: 12px;
+          inset-block-start: 0;
+          border-block-start: 1px solid color-mix(in srgb, var(--mff-divider) 62%, transparent);
+          pointer-events: none;
+        }
+
+        &[label]::after {
+          inset-block-start: calc(3px - var(--urlbarview-labeled-row-margin-top));
+          border-block-start-color: var(--mff-divider);
+        }
+      }
+    }
+
+    /* The address-bar result menu uses HTML panel lists, including its container submenu. */
+    :is(panel-list.urlbarView-result-menu, .urlbarView-result-menu panel-list) {
+      --panel-list-background-color: var(--mff-panel) !important;
+      --panel-list-text-color: var(--mff-text) !important;
+      --panel-list-border-color: var(--mff-line) !important;
+      --panel-list-border-radius: var(--mff-popup-radius) !important;
+      --panel-list-padding-block: 6px !important;
+      --panel-separator-color: var(--mff-divider) !important;
+
+      & panel-item {
+        --panel-item-button-border-radius: 7px !important;
+        --panel-item-button-margin: 0 6px !important;
+        --button-background-color-menu-hover: var(--mff-choice) !important;
+        --button-background-color-menu-active: var(--mff-pressed) !important;
+        --button-text-color-menu-hover: var(--mff-text) !important;
+        --button-text-color-menu-active: var(--mff-text) !important;
+      }
+    }
+
+    /* Set the palette on Firefox-owned menus and panels, including their submenus. */
+    :is(#contentAreaContextMenu, .textbox-contextmenu, #tabContextMenu, #toolbar-context-menu, #placesContext,
+        .toolbar-menupopup, #main-menubar > menu > menupopup, #sidebar-context-menu, #sidebar-tools-overflow,
+        #sidebar-history-context-menu, #sidebar-bookmarks-context-menu, #sidebar-synced-tabs-context-menu,
+        #appMenu-popup, #downloadsPanel, #unified-extensions-panel,
+        #unified-extensions-context-menu, #new-tab-button-popup, .new-tab-popup, #ContentSelectDropdownPopup,
+        #editBookmarkPanel, #editBookmarkPanel #editBMPanel_folderMenuList > menupopup,
+        #permission-popup, #identity-popup, #protections-popup, #trustpanel-popup,
+        #full-page-translations-panel, #full-page-translations-panel menulist > menupopup,
+        #full-page-translations-panel-settings-menupopup,
+        #customizationui-widget-panel[viewId="PanelUI-fxa"],
+        #widget-overflow, #tab-preview-panel) {
+      &, & menupopup:not(menulist > menupopup) {
+        color-scheme: inherit !important;
+        --panel-background-color: var(--mff-panel) !important;
+        --panel-text-color: var(--mff-text) !important;
+        --panel-border-color: var(--mff-line) !important;
+        --panel-border-radius: var(--mff-popup-radius) !important;
+        --panel-separator-color: var(--mff-divider) !important;
+        --button-background-color-menu-hover: var(--mff-choice) !important;
+        --button-background-color-menu-active: var(--mff-pressed) !important;
+        --button-text-color-menu-hover: var(--mff-text) !important;
+        --button-text-color-menu-active: var(--mff-text) !important;
+      }
+
+      &:is(menupopup),
+      & menupopup:not(menulist > menupopup) {
+        --panel-padding-block: 6px !important;
+        --menuitem-border-radius: 7px !important;
+        --menuitem-padding-inline: 10px !important;
+        --menuitem-padding-block: 4px !important;
+
+        & > menuseparator {
+          padding-inline: 9px !important;
+        }
+
+        & > :is(menu, menuitem)[_moz-menuactive]:not([disabled]),
+        & > #context-navigation > menuitem[_moz-menuactive]:not([disabled]) {
+          background-color: var(--mff-choice) !important;
+          color: var(--mff-text) !important;
+          box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--mff-line) 65%, transparent);
+        }
+
+        & > :is(menu, menuitem)[disabled] {
+          color: var(--mff-disabled) !important;
+        }
+      }
+    }
+
+    /* Firefox paints HTML select popups in browser chrome, including page-supplied colors. */
+    #ContentSelectDropdownPopup {
+      &[customoptionstyling]::part(arrowscrollbox) {
+        background-color: var(--mff-panel) !important;
+        background-image: none !important;
+      }
+
+      & > :is(menuitem, menucaption) {
+        text-shadow: none !important;
+
+        &:not([_moz-menuactive]:not([disabled])) {
+          background-color: transparent !important;
+        }
+
+        &:not([disabled]) {
+          color: var(--mff-text) !important;
+        }
+      }
+    }
+
+    :is(#editBookmarkPanel, #permission-popup, #identity-popup, #protections-popup,
+        #trustpanel-popup, #full-page-translations-panel) {
+      --text-color-deemphasized: var(--mff-muted) !important;
+      --panel-menuitem-border-radius: 7px !important;
+    }
+
+    :is(#editBookmarkPanel, #permission-popup, #full-page-translations-panel) {
+      --button-border-radius: 8px !important;
+      --button-border-color: var(--mff-line) !important;
+      --button-border-color-hover: var(--mff-line) !important;
+      --button-border-color-active: var(--mff-line) !important;
+      --button-background-color: var(--mff-field) !important;
+      --button-background-color-hover: var(--mff-hover) !important;
+      --button-background-color-active: var(--mff-pressed) !important;
+      --button-text-color: var(--mff-text) !important;
+      --button-text-color-hover: var(--mff-text) !important;
+      --button-text-color-active: var(--mff-text) !important;
+    }
+
+    #editBookmarkPanel {
+      --input-background-color: var(--mff-field) !important;
+      --input-border-color: var(--mff-line) !important;
+      --input-text-color: var(--mff-text) !important;
+    }
+
+    :is(#editBookmarkPanel, #full-page-translations-panel) .footer-button[default]:not([disabled]) {
+      --button-background-color-primary: var(--mff-accent) !important;
+      --button-background-color-primary-hover: color-mix(in srgb, var(--mff-accent) 82%, var(--mff-text)) !important;
+      --button-background-color-primary-active: color-mix(in srgb, var(--mff-accent) 65%, var(--mff-text)) !important;
+      --button-text-color-primary: var(--mff-toolbar) !important;
+      --button-text-color-primary-hover: var(--mff-toolbar) !important;
+      --button-text-color-primary-active: var(--mff-toolbar) !important;
+    }
+
+    #full-page-translations-panel menulist {
+      --select-background-color: var(--mff-field) !important;
+      --select-background-color-hover: var(--mff-hover) !important;
+      --select-border-color: var(--mff-line) !important;
+      --select-border-color-hover: var(--mff-accent) !important;
+      --select-border-radius: 8px !important;
+    }
+
+    #full-page-translations-panel .footer-button[default][disabled] {
+      background-color: var(--mff-field) !important;
+      color: var(--mff-disabled) !important;
+    }
+
+    /* Match the normal protection card to the popup while retaining warning colors. */
+    #trustpanel-popup[tracking-protection="enabled"] {
+      --trustpanel-highlight-bg: var(--mff-field) !important;
+      --trustpanel-card-divider-color: var(--mff-divider) !important;
+
+      & #trustpanel-graphic-section {
+        border: 1px solid var(--mff-divider) !important;
+        border-radius: 9px !important;
+      }
+    }
+
+    #context-navigation {
+      gap: 4px;
+      padding: 2px;
+      border: 1px solid var(--mff-divider);
+      border-radius: 8px;
+      background-color: var(--mff-field);
+    }
+
+    #tab-preview-panel {
+      & .tab-preview-uri {
+        color: var(--mff-muted) !important;
+      }
+
+      & .tab-preview-thumbnail-container > canvas {
+        border-color: var(--mff-divider) !important;
+      }
+    }
+
+    :is(#tabbrowser-tab-tooltip, #bhTooltip, #dynamic-shortcut-tooltip) {
+      appearance: none !important;
+      background-color: var(--mff-panel) !important;
+      color: var(--mff-text) !important;
+      border: 1px solid var(--mff-line) !important;
+      border-radius: min(9px, var(--mff-popup-radius)) !important;
+
+      & .places-tooltip-uri {
+        color: var(--mff-muted) !important;
+      }
+    }
+  }
+}
+
+/* Sidebar tools load their own chrome documents, each with an independent cascade. */
+@-moz-document url("chrome://browser/content/places/bookmarksSidebar.xhtml"),
+    url("chrome://browser/content/places/historySidebar.xhtml"),
+    url("chrome://browser/content/syncedtabs/sidebar.html"),
+    url("chrome://browser/content/sidebar/sidebar-bookmarks.html"),
+    url("chrome://browser/content/sidebar/sidebar-history.html"),
+    url("chrome://browser/content/sidebar/sidebar-syncedtabs.html"),
+    url("chrome://browser/content/sidebar/sidebar-customize.html"),
+    url("chrome://browser/content/genai/chat.html"),
+    url("chrome://global/content/megalist/megalist.html") {
+  @media not (forced-colors) {
+    :root {
+      background-color: var(--mff-panel) !important;
+      color: var(--mff-text) !important;
+      accent-color: var(--mff-accent) !important;
+      --sidebar-background-color: var(--mff-panel) !important;
+      --sidebar-text-color: var(--mff-text) !important;
+      --sidebar-box-background: var(--mff-tab-selected) !important;
+      --sidebar-box-border-color: var(--mff-line) !important;
+      --sidebar-box-color: var(--mff-text) !important;
+      --background-color-canvas: var(--mff-panel) !important;
+      --background-color-box: var(--mff-tab-selected) !important;
+      --background-color-list-item-hover: var(--mff-hover) !important;
+      --text-color: var(--mff-text) !important;
+      --text-color-deemphasized: var(--mff-muted) !important;
+      --border-color: var(--mff-line) !important;
+      --panel-separator-color: var(--mff-divider) !important;
+      --color-accent-primary: var(--mff-accent) !important;
+      --focus-outline-color: var(--mff-accent) !important;
+      --input-background-color: var(--mff-field) !important;
+      --input-border-color: var(--mff-line) !important;
+      --link-color: var(--mff-text) !important;
+      --link-color-hover: var(--mff-accent) !important;
+      --button-border-color: var(--mff-line) !important;
+      --button-background-color-ghost-hover: var(--mff-hover) !important;
+    }
+
+    #footer.promo-active {
+      --promo-background: var(--mff-field) !important;
+    }
+  }
+}
