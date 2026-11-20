@@ -4,9 +4,9 @@ Tema CSS para o Firefox, desenvolvido para Fedora e GNOME. Usa uma paleta neutra
 
 ## Compatibilidade
 
-| Ambiente | Situação na v0.10.1 |
+| Ambiente | Situação na v0.10.2 |
 | --- | --- |
-| Firefox 160.0 no Fedora 45 | Pacote validado e teste visual de páginas internas em perfil temporário. O layout das abas, a barra lateral e os controles do GNOME ainda precisam de validação visual. |
+| Firefox 160.0 no Fedora 45 | Páginas internas testadas visualmente em perfil temporário na v0.10.1. O painel de notificações atualizado ainda precisa de validação visual. O layout das abas, a barra lateral e os controles do GNOME ainda precisam de validação visual. |
 | Outros ambientes Linux, Windows e macOS | Instalação manual disponível. Aparência e controles de janela ainda sem validação. |
 | Firefox ESR, Beta e Nightly | Sem validação. Diferenças na interface podem impedir a aplicação de parte do tema. |
 
@@ -14,7 +14,7 @@ O tema usa seletores internos do Firefox. Atualizações podem mudar a aparênci
 
 ## Instalação
 
-1. Extraia `ModernFireFox-v0.10.1.zip`. Se ainda precisar baixar o pacote, use a [release v0.10.1](https://github.com/gubertaglia/ModernFireFox/releases/tag/v0.10.1).
+1. Extraia `ModernFireFox-v0.10.2.zip`. Se ainda precisar baixar o pacote, use a [release v0.10.2](https://github.com/gubertaglia/ModernFireFox/releases/tag/v0.10.2).
 2. Abra `about:support` no Firefox em que você quer instalar o tema. Na linha **Pasta do perfil** ou **Diretório do perfil**, clique no botão para abrir a pasta. Se não abrir, use `about:profiles` e copie o caminho do **Diretório raiz** do perfil em uso.
 3. Abra `about:config`, procure `toolkit.legacyUserProfileCustomizations.stylesheets` e defina como `true`.
 4. Feche o Firefox por completo. Na pasta do perfil aberta no passo 2, crie a pasta `chrome` se ela ainda não existir.

@@ -356,6 +356,7 @@
         #unified-extensions-context-menu, #new-tab-button-popup, .new-tab-popup, #ContentSelectDropdownPopup,
         #editBookmarkPanel, #editBookmarkPanel #editBMPanel_folderMenuList > menupopup,
         #permission-popup, #identity-popup, #protections-popup, #trustpanel-popup,
+        #notification-popup:has(> #web-notifications-notification:not([hidden])),
         #full-page-translations-panel, #full-page-translations-panel menulist > menupopup,
         #full-page-translations-panel-settings-menupopup,
         #customizationui-widget-panel[viewId="PanelUI-fxa"],
@@ -423,7 +424,8 @@
       --panel-menuitem-border-radius: 7px !important;
     }
 
-    :is(#editBookmarkPanel, #permission-popup, #full-page-translations-panel) {
+    :is(#editBookmarkPanel, #permission-popup, #full-page-translations-panel),
+    #web-notifications-notification :is(.popup-notification-primary-button, .popup-notification-secondary-button) {
       --button-border-radius: 8px !important;
       --button-border-color: var(--mff-line) !important;
       --button-border-color-hover: var(--mff-line) !important;
@@ -442,13 +444,20 @@
       --input-text-color: var(--mff-text) !important;
     }
 
-    :is(#editBookmarkPanel, #full-page-translations-panel) .footer-button[default]:not([disabled]) {
+    :is(#editBookmarkPanel, #full-page-translations-panel) .footer-button[default]:not([disabled]),
+    #web-notifications-notification .popup-notification-primary-button:not([disabled]) {
       --button-background-color-primary: var(--mff-accent) !important;
       --button-background-color-primary-hover: color-mix(in srgb, var(--mff-accent) 82%, var(--mff-text)) !important;
       --button-background-color-primary-active: color-mix(in srgb, var(--mff-accent) 65%, var(--mff-text)) !important;
       --button-text-color-primary: var(--mff-toolbar) !important;
       --button-text-color-primary-hover: var(--mff-toolbar) !important;
       --button-text-color-primary-active: var(--mff-toolbar) !important;
+    }
+
+    #web-notifications-notification .popup-notification-learnmore-link {
+      --link-color: var(--mff-accent) !important;
+      --link-color-hover: var(--mff-text) !important;
+      --link-color-active: var(--mff-text) !important;
     }
 
     #full-page-translations-panel menulist {
