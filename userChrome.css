@@ -148,6 +148,7 @@
 
     :root:not([popup-window], [chromeless-window], [mini-window], [taskbartab], [ai-window])
       #navigator-toolbox {
+      color-scheme: light dark !important;
       --toolbox-background-color: var(--mff-toolbar) !important;
       --toolbox-background-color-inactive: var(--mff-toolbar) !important;
       --toolbox-text-color: var(--mff-text) !important;
@@ -161,10 +162,16 @@
       }
 
       & :is(#nav-bar, #TabsToolbar, #PersonalToolbar) {
+        /* Firefox can assign each toolbar a separate scheme from its icon color. */
+        color-scheme: inherit !important;
         --toolbarbutton-icon-fill: var(--mff-text) !important;
         --toolbarbutton-border-radius: 8px !important;
         --toolbarbutton-background-color-hover: var(--mff-hover) !important;
         --toolbarbutton-background-color-active: var(--mff-pressed) !important;
+      }
+
+      & #nav-bar #urlbar {
+        color-scheme: inherit !important;
       }
 
       @media (-moz-platform: linux) {
@@ -359,7 +366,8 @@
         #notification-popup:has(> #web-notifications-notification:not([hidden])),
         #full-page-translations-panel, #full-page-translations-panel menulist > menupopup,
         #full-page-translations-panel-settings-menupopup,
-        #customizationui-widget-panel[viewId="PanelUI-fxa"],
+        #customizationui-widget-panel:is(
+          [viewId="PanelUI-fxa"], [viewId="allTabsMenu-allTabsView"], [viewId="fire-button-panel"]),
         #widget-overflow, #tab-preview-panel) {
       &, & menupopup:not(menulist > menupopup) {
         color-scheme: inherit !important;
@@ -419,12 +427,14 @@
     }
 
     :is(#editBookmarkPanel, #permission-popup, #identity-popup, #protections-popup,
-        #trustpanel-popup, #full-page-translations-panel) {
+        #trustpanel-popup, #full-page-translations-panel),
+    #customizationui-widget-panel[viewId="allTabsMenu-allTabsView"] {
       --text-color-deemphasized: var(--mff-muted) !important;
       --panel-menuitem-border-radius: 7px !important;
     }
 
     :is(#editBookmarkPanel, #permission-popup, #full-page-translations-panel),
+    #fire-button-panel moz-button,
     #web-notifications-notification :is(.popup-notification-primary-button, .popup-notification-secondary-button) {
       --button-border-radius: 8px !important;
       --button-border-color: var(--mff-line) !important;
@@ -454,6 +464,17 @@
       --button-text-color-primary-active: var(--mff-toolbar) !important;
     }
 
+    #fire-button-panel-confirm-button {
+      --mff-danger: light-dark(#a32e45, #e48691);
+      --button-background-color-destructive: var(--mff-danger) !important;
+      --button-background-color-destructive-hover: color-mix(in srgb, var(--mff-danger) 86%, var(--mff-text)) !important;
+      --button-background-color-destructive-active: color-mix(in srgb, var(--mff-danger) 72%, var(--mff-text)) !important;
+      --button-text-color-destructive: var(--mff-toolbar) !important;
+      --button-text-color-destructive-hover: var(--mff-toolbar) !important;
+      --button-text-color-destructive-active: var(--mff-toolbar) !important;
+    }
+
+    #fire-button-panel-choose-link,
     #web-notifications-notification .popup-notification-learnmore-link {
       --link-color: var(--mff-accent) !important;
       --link-color-hover: var(--mff-text) !important;
